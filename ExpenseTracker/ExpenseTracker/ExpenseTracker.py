@@ -1,13 +1,14 @@
 import pyodbc
+from tkinter import *
 from DatabaseConnection import DbConnection
 
-cursor = DbConnection.conxn.cursor()
+def main():
+    cursor = DbConnection.conxn.cursor()
+    root = Tk()
+    root.title('Expense Tracker')
 
-#grabs data to output using a query
-cursor.execute('SELECT * FROM Category')
+    root.mainloop()
+    DbConnection.conxn.close()
 
-#print data grabbed from query
-for row in cursor:
-    print(row)
-
-DbConnection.conxn.close()
+if __name__ == "__main__":
+    main()
