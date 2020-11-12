@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>36672e29-61df-44ee-bf91-6a4f30dcecbb</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>ExpenseTracker.py</StartupFile>
+    <StartupFile>HomePage.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -24,7 +24,16 @@
     <Compile Include="DatabaseConnection.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExpenseTracker.py" />
+    <Compile Include="HomePage.py" />
+    <Compile Include="HistoryPage.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SetAlertPage.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ViewAlertsPage.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
