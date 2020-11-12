@@ -35,7 +35,13 @@ class ViewAlertsPageForm(Toplevel):
 
         ### Add Data ###
         #Query to get data from the alert and category tables
-        alerts = cursor.execute('SELECT Alert.Id, Category.Name, Alert.CurrentAmount, Alert.MaxAmount, Period.Name FROM Alert INNER JOIN Category ON Alert.CategoryId=Category.Id INNER JOIN Period ON Alert.PeriodId=Period.Id').fetchall()
+        alerts = cursor.execute('''SELECT Alert.Id, Category.Name, Alert.CurrentAmount, Alert.MaxAmount, Period.Name 
+                                    FROM Alert 
+                                    INNER JOIN Category 
+                                    ON Alert.CategoryId=Category.Id 
+                                    INNER JOIN Period 
+                                    ON Alert.PeriodId=Period.Id'''
+                                    ).fetchall()
 
         #Loop through the alerts and append them in a list
         var = []
@@ -69,7 +75,7 @@ class ViewAlertsPageForm(Toplevel):
                 alert_tree.delete(a)
 
         #button used to delete an element from the alert table
-        delete_selected_button = Button(self,text="Delete Selected Alerts",command=lambda:Remove_Alerts(),font=20,width=7).grid(row=1,column=0,padx=10,pady=5,sticky='NSEW')
+        delete_selected_button = Button(self,text="Delete Selected Alerts",command=lambda:Remove_Alerts(),font=20,width=7).grid(row=1,column=0,padx=5,pady=5,sticky='NSEW')
 
         #Add Set Alert button that takes you to the Set Alert page
         set_alert_button = Button(self,text="Set An Alert", command= lambda:SetAlertPageForm(self),font=20,width=7).grid(row=1,column=1,padx=5,pady=5,sticky='NSEW')

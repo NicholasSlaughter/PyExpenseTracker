@@ -31,12 +31,17 @@ class HistoryPageForm(Toplevel):
 
         ### Add Data ###
         #Query to get data from the expense and category tables
-        expenses = cursor.execute('SELECT Expense.Id, Category.Name, Expense.Amount, Expense.Date FROM Expense INNER JOIN Category ON Expense.CategoryId=Category.Id').fetchall()
+        expenses = cursor.execute('''SELECT Expense.Id, Category.Name, Expense.Amount, Expense.Date 
+                                     FROM Expense 
+                                     INNER JOIN Category 
+                                     ON Expense.CategoryId=Category.Id'''
+                                     ).fetchall()
 
         #Loop through the expenses and append them in a list
         var = []
         for e in expenses:
-            var.append((e[0],e[1],e[2],e[3]))
+            formatted_time = str(e[3].month) + '/' + str(e[3].day) + '/' + str(e[3].year) + ' at ' + str(e[3].hour) + ':' + str(e[3].minute)
+            var.append((e[0],e[1],e[2],formatted_time))
 
         #Put Data Into Tree
         for i in range(len(var)):
