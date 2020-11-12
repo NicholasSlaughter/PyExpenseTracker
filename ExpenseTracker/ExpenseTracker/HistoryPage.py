@@ -40,5 +40,9 @@ class HistoryPageForm(Toplevel):
         for i in range(len(var)):
             history_tree.insert(parent='',index='end',iid=i,values=(var[i][0],var[i][1],var[i][2]))
 
-        #Pack To Screen
-        history_tree.pack(pady=20)
+        #Grid To Screen
+        history_tree.grid(row=0,column=0,padx=5,pady=20,sticky='NSEW')
+
+        #Add functionality for the widgets to resize with the window
+        self.grid_columnconfigure(0,weight=1)
+        self.grid_rowconfigure(0,weight=1)

@@ -1,4 +1,3 @@
-import pyodbc
 from datetime import datetime
 from tkinter import *
 from tkinter import messagebox 
