@@ -5,10 +5,13 @@ class DbConnection():
     database = 'ExpenseTracker'
 
     #Establishes Connection String
-    conxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server}; \
-                            SERVER=' + server + '; \
-                            DATABASE=' + database +'; \
-                            Trusted_Connection=yes;')
+    try:
+        conxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server}; \
+                                SERVER=' + server + '; \
+                                DATABASE=' + database +'; \
+                                Trusted_Connection=yes;')
+    except:
+        print("Unable To Connect To Database!")
 
     #Create Connection Cursor
     #cursor = conxn.cursor()

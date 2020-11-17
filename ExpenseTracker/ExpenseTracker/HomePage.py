@@ -13,14 +13,16 @@ def main():
     categories = cursor.execute('SELECT * FROM Category').fetchall()
     var = []
 
+    #Get The List Of Category Names To Appear In The Option Menu
+    try:
+        for c in categories:
+            var.append(c[1])
+        category = StringVar(root)
+        category.set(var[0])
 
-
-    for c in categories:
-        var.append(c[1])
-    category = StringVar(root)
-    category.set(var[0])
-
-    entry_value = StringVar()
+        entry_value = StringVar()
+    except:
+        messagebox.showerror(title="No Categories",message="There is no categories in the database!")
 
     def Submit_Clicked(amount,cat):
         amount_to_insert = amount
@@ -36,10 +38,12 @@ def main():
 
         insert_query = '''INSERT INTO Expense (Amount,Date,CategoryId)
                           VALUES (?,?,?)'''
-
-        cursor.execute(insert_query,amount_to_insert,date,cat_to_insert)
-        DbConnection.conxn.commit()
-        messagebox.showinfo("Expense Entered","You Have Entered An Expense")
+        try:
+            cursor.execute(insert_query,amount_to_insert,date,cat_to_insert)
+            DbConnection.conxn.commit()
+            messagebox.showinfo("Expense Entered","You Have Entered An Expense")
+        except:
+            messagebox.showerror(title="Unable To Insert",message="Unable To Insert The Expense!")
 
         #Loop through each alert, see if there are matching categories with what was previously entered and then update the current amount that the user has spent
         alerts = cursor.execute('SELECT * FROM Alert').fetchall()
@@ -51,8 +55,11 @@ def main():
                 update_query = '''UPDATE Alert
                                   SET CurrentAmount = (?)
                                   WHERE Alert.Id = (?)'''
-                cursor.execute(update_query,a[2],a[0])
-                DbConnection.conxn.commit()
+                try:
+                    cursor.execute(update_query,a[2],a[0])
+                    DbConnection.conxn.commit()
+                except:
+                    messagebox.showerror(title="Unable To Update",message="Unable to update the current amount of the alert!")
 
                 #If the current amount is larger than the max amount for an alert then alert the user that they have over spent
                 if a[1] < a[2]:

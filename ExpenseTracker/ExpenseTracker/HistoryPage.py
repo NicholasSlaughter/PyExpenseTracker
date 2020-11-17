@@ -46,7 +46,11 @@ class HistoryPageForm(Toplevel):
 
         #Put Data Into Tree
         for i in range(len(var)):
-            history_tree.insert(parent='',index='end',iid=i,values=(var[i][0],var[i][1],var[i][2],var[i][3]))
+            try:
+                history_tree.insert(parent='',index='end',iid=i,values=(var[i][0],var[i][1],var[i][2],var[i][3]))
+            except:
+                messagebox.showerror(title="Unable To Show All Expenses",message="Unable To Show An Expense In The Tree")
+                print("Part in tree not shown: " + i)
 
         #Grid To Screen
         history_tree.grid(row=0,column=0,padx=5,pady=20,sticky='NSEW')
@@ -64,11 +68,15 @@ class HistoryPageForm(Toplevel):
                 delete_query = '''DELETE FROM Expense WHERE Id = (?)'''
 
                 #The Id is the 1st element in the array to scope to that and delete it from the db
-                cursor.execute(delete_query,expense_id[0])
-                DbConnection.conxn.commit()
+                try:
+                    cursor.execute(delete_query,expense_id[0])
+                    DbConnection.conxn.commit()
 
-                #delete expense from tree to sync with database
-                history_tree.delete(e)
+                    #delete expense from tree to sync with database
+                    history_tree.delete(e)
+                except:
+                    messagebox.showerror(title="Unable To Delete",message="Unable To Delete Expense From Database")
+                    print("Expense That Is Not Deletable: " + str(expense_id[0]))
 
             #Tell The User That The Expense Has Been Deleted
             messagebox.showinfo("Expense(s) Deleted","Expense(s) Has Been Deleted")

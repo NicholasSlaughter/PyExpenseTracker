@@ -12,18 +12,25 @@ class SetAlertPageForm(Toplevel):
         #Get categories to that will appear in option window
         categories = cursor.execute('SELECT * FROM Category').fetchall()
         cat = []
-        for c in categories:
-            cat.append(c[1])
-        category = StringVar(self)
-        category.set(cat[0])
+        try:
+            for c in categories:
+                cat.append(c[1])
+            category = StringVar(self)
+            category.set(cat[0])
+        except:
+            messagebox.showerror(title="No Categories",message="There is no categories in the database!")
 
         #Get periods to that will appear in option window
         periods = cursor.execute('SELECT * FROM Period').fetchall()
         per = []
-        for p in periods:
-            per.append(p[1])
-        period = StringVar(self)
-        period.set(per[0])
+
+        try:
+            for p in periods:
+                per.append(p[1])
+            period = StringVar(self)
+            period.set(per[0])
+        except:
+            messagebox.showerror(title="No Periods",message="There is no periods in the database!")
 
         entry_value = StringVar()
 
@@ -47,10 +54,13 @@ class SetAlertPageForm(Toplevel):
 
             insert_query = '''INSERT INTO Alert (MaxAmount,CurrentAmount,CategoryId,PeriodId)
                           VALUES (?,?,?,?)'''
-
-            cursor.execute(insert_query,max_amount_to_insert,0,cat_to_insert,per_to_insert)
-            DbConnection.conxn.commit()
-            messagebox.showinfo("Alert Created","You Have Created An Alert")
+            
+            try:
+                cursor.execute(insert_query,max_amount_to_insert,0,cat_to_insert,per_to_insert)
+                DbConnection.conxn.commit()
+                messagebox.showinfo("Alert Created","You Have Created An Alert")
+            except:
+                messagebox.showerror("Unable To Insert Alert","Alert Can Not Be Inserted Into The Database!")
 
 
         max_amount_label = Label(self,text="Max Amount:",font=20,padx=10,pady=5).grid(row=0,column=0,sticky='NSEW')

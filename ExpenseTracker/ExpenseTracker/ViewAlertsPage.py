@@ -51,7 +51,11 @@ class ViewAlertsPageForm(Toplevel):
 
         #Put Data Into Tree
         for i in range(len(var)):
-            alert_tree.insert(parent='',index='end',iid=i,values=(var[i][0],var[i][1],var[i][2],var[i][3],var[i][4]))
+            try:
+                alert_tree.insert(parent='',index='end',iid=i,values=(var[i][0],var[i][1],var[i][2],var[i][3],var[i][4]))
+            except:
+                messagebox.showerror("Unable To Show All Alerts","Not All Alerts Could Be Shown")
+                print("Alert Not Shown: " + i)
 
         #Pack To Screen
         alert_tree.grid(row=0,column=0, columnspan=2,padx=5,pady=20,sticky='NSEW')
@@ -60,6 +64,10 @@ class ViewAlertsPageForm(Toplevel):
         def Remove_Alerts():
             nonlocal alert_tree
             alerts_to_remove = alert_tree.selection()
+
+            #Flag If An Alert Can Not Be Deleted
+            can_not_delete_flag = 0
+
             #Loop through the selected alerts and delete them from both the tree and the database
             for a in alerts_to_remove:
                 #Get the the Id of the alert in the database
@@ -69,14 +77,22 @@ class ViewAlertsPageForm(Toplevel):
                 delete_query = '''DELETE FROM Alert WHERE Id = (?)'''
 
                 #The Id is the 1st element in the array to scope to that and delete it from the db
-                cursor.execute(delete_query,alert_id[0])
-                DbConnection.conxn.commit()
+                try:
+                    cursor.execute(delete_query,alert_id[0])
+                    DbConnection.conxn.commit()
 
-                #delete alert from tree to sync with database
-                alert_tree.delete(a)
+                    #delete alert from tree to sync with database
+                    alert_tree.delete(a)
+                except:
+                    messagebox.showerror(title="Unable To Delete",message="Unable To Delete Alert From Database")
+                    print("Alert That Is Not Deletable: " + str(alert_id[0]))
+
+                    #Raise Flag That The Alert Can Not Be Deleted
+                    can_not_delete_flag = 1
 
             #Tell The User That The Alert Has Been Deleted
-            messagebox.showinfo("Alert(s) Deleted","Alert(s) Has Been Deleted")
+            if can_not_delete_flag == 0:
+                messagebox.showinfo("Alert(s) Deleted","Alert(s) Has Been Deleted")
 
         #button used to delete an element from the alert table
         delete_selected_button = Button(self,text="Delete Selected Alerts",command=lambda:Remove_Alerts(),font=20,width=7).grid(row=1,column=0,padx=5,pady=5,sticky='NSEW')
