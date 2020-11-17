@@ -35,6 +35,15 @@ class SetAlertPageForm(Toplevel):
         entry_value = StringVar()
 
         def Submit_Clicked(max_amount,cat,per):
+            ONE_BILLION = 1000000000
+            #Check to see if the last character for amount is a decimal point. If true then output an error else input the amount to the database
+            if max_amount[-1] == ".":
+                messagebox.showerror("Invalid Amount","The Max Amount Field Can Not End With A Decimal Point!")
+                return
+            elif float(max_amount) > ONE_BILLION:
+                messagebox.showerror("Invalid Amount","The Amount Field Can Not Be Equal To Or Larger Than 1 Billion")
+                return
+
             max_amount_to_insert = max_amount
             cat_to_insert = cat
             per_to_insert = per
@@ -63,8 +72,55 @@ class SetAlertPageForm(Toplevel):
                 messagebox.showerror("Unable To Insert Alert","Alert Can Not Be Inserted Into The Database!")
 
 
+        #flag if a decimal point has been used
+        decimal_point_used = 0
+        #Places after the decimal point in the Entry box
+        places_after_dec_point = 0
+
+        #Checks To Validate What Was Input To The Into The Entry Box
+        def callback(d,S):
+            nonlocal decimal_point_used
+            nonlocal places_after_dec_point
+
+            #If the text entered is a digit, a decimal point, or nothing then return true and update the Entry box
+            if str.isdigit(S) or S == "." or S == "":
+                #Max length allowed is 12 (Up To 999,999,999.99)
+                if len(entry_value.get()) < 12:
+                    #If the text entered is a decimal point check to see if it is being inserted or deleted
+                    if S == ".":
+                        #If inserted (d=1) then raise the decimal point flag if it has not been used already
+                        if int(d) == 1:
+                            if decimal_point_used != 1:
+                                places_after_dec_point = 0
+                                decimal_point_used = 1
+                                return True
+                            else:
+                                #If a decimal point has already been used then do not update the entry box
+                                return False
+                        else:
+                            #If the decimal point is being deleted then set the decimal point flag to 0
+                            decimal_point_used = 0
+                            return True
+                    elif decimal_point_used == 1 and int(d) == 1:
+                        places_after_dec_point += 1
+                        if places_after_dec_point <= 2:
+                            return True
+                        else:
+                            return False
+                    else:
+                        #If the text entered is does not have a decimal point then we do not need further validation and return true
+                        return True
+                elif int(d) == 0:
+                    return True
+                else:
+                    return False
+            else:
+                return False
+
+        vcmd = (self.register(callback))
+                
         max_amount_label = Label(self,text="Max Amount:",font=20,padx=10,pady=5).grid(row=0,column=0,sticky='NSEW')
-        max_amount_entry = Entry(self,font=10,justify=RIGHT,textvariable=entry_value).grid(row=0,column=1, columnspan=4, padx=5, pady=5, sticky='NSEW')
+        max_amount_entry = Entry(self,validate='all', validatecommand=(vcmd,'%d','%S'),font=10,justify=RIGHT,textvariable=entry_value).grid(row=0,column=1, columnspan=4, padx=5, pady=5, sticky='NSEW')
 
         category_label = Label(self,text="Category:",font=20,padx=10,pady=5).grid(row=1,column=0,sticky='NSEW')
         category_option_menu = OptionMenu(self,category,*cat).grid(row=1,column=1, columnspan=4, padx=5, pady=5, sticky='NSEW')
