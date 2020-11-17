@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox 
 from SetAlertPage import SetAlertPageForm
 from DatabaseConnection import DbConnection
 
@@ -53,7 +54,7 @@ class ViewAlertsPageForm(Toplevel):
             alert_tree.insert(parent='',index='end',iid=i,values=(var[i][0],var[i][1],var[i][2],var[i][3],var[i][4]))
 
         #Pack To Screen
-        alert_tree.grid(row=0,column=0,padx=5,pady=20,sticky='NSEW')
+        alert_tree.grid(row=0,column=0, columnspan=2,padx=5,pady=20,sticky='NSEW')
 
         #Delete Selected Alerts
         def Remove_Alerts():
@@ -73,6 +74,9 @@ class ViewAlertsPageForm(Toplevel):
 
                 #delete alert from tree to sync with database
                 alert_tree.delete(a)
+
+            #Tell The User That The Alert Has Been Deleted
+            messagebox.showinfo("Alert(s) Deleted","Alert(s) Has Been Deleted")
 
         #button used to delete an element from the alert table
         delete_selected_button = Button(self,text="Delete Selected Alerts",command=lambda:Remove_Alerts(),font=20,width=7).grid(row=1,column=0,padx=5,pady=5,sticky='NSEW')

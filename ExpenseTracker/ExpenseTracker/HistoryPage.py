@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox 
 from DatabaseConnection import DbConnection
 
 class HistoryPageForm(Toplevel):
@@ -68,6 +69,9 @@ class HistoryPageForm(Toplevel):
 
                 #delete expense from tree to sync with database
                 history_tree.delete(e)
+
+            #Tell The User That The Expense Has Been Deleted
+            messagebox.showinfo("Expense(s) Deleted","Expense(s) Has Been Deleted")
 
         #button used to delete an element from the expense table
         delete_selected_button = Button(self,text="Delete Selected Expenses",command=lambda:Remove_Expenses(),font=20,width=7).grid(row=1,column=0,padx=10,pady=5,sticky='NSEW')
