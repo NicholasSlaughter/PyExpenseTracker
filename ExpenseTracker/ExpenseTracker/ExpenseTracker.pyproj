@@ -11,6 +11,9 @@
     <OutputPath>.</OutputPath>
     <Name>ExpenseTracker</Name>
     <RootNamespace>ExpenseTracker</RootNamespace>
+    <TestFramework>unittest</TestFramework>
+    <UnitTestPattern>*test.py</UnitTestPattern>
+    <UnitTestRootDirectory>.</UnitTestRootDirectory>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,6 +27,7 @@
     <Compile Include="DatabaseConnection.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DbTest.py" />
     <Compile Include="HomePage.py" />
     <Compile Include="HistoryPage.py">
       <SubType>Code</SubType>
@@ -34,9 +38,6 @@
     <Compile Include="ViewAlertsPage.py">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
