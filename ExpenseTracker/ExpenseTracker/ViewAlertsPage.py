@@ -19,11 +19,11 @@ class ViewAlertsPageForm(Toplevel):
         alert_tree['columns'] = ('Id','Category','Currently Spent','Max Alloted','Period')
 
         #Format Columns
-        alert_tree.column('#0',width=0,minwidth=0) #Phantom column (if parent and child then have width greater than 0)
-        alert_tree.column('Id',width=0,minwidth=0)
+        alert_tree.column('#0',width=0,minwidth=0,stretch=NO) #Phantom column (if parent and child then have width greater than 0)
+        alert_tree.column('Id',width=0,minwidth=0,stretch=NO)
         alert_tree.column('Category', anchor=W, width=120)
-        alert_tree.column('Currently Spent', anchor=CENTER, width=120)
-        alert_tree.column('Max Alloted', anchor=CENTER, width=120)
+        alert_tree.column('Currently Spent', anchor=CENTER, width=150)
+        alert_tree.column('Max Alloted', anchor=CENTER, width=150)
         alert_tree.column('Period',anchor=W,width=120)
 
         #Create Headings

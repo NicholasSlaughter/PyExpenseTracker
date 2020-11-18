@@ -17,8 +17,8 @@ class HistoryPageForm(Toplevel):
         history_tree['columns'] = ('Id','Category','Price','Date')
 
         #Format Columns
-        history_tree.column('#0',width=0,minwidth=0) #Phantom column (if parent and child then have width greater than 0)
-        history_tree.column('Id',width=0,minwidth=0)
+        history_tree.column('#0',width=0,minwidth=0,stretch=NO) #Phantom column (if parent and child then have width greater than 0)
+        history_tree.column('Id',width=0,minwidth=0,stretch=NO)
         history_tree.column('Category', anchor=W, width=120)
         history_tree.column('Price', anchor=CENTER, width=80)
         history_tree.column('Date', anchor=W, width=120)
